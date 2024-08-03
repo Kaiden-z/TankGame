@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bv64ds08ejq3i"]
+[gd_scene load_steps=5 format=3 uid="uid://bv64ds08ejq3i"]
 
-[ext_resource type="PackedScene" uid="uid://bym4jg4rr025e" path="res://playerbase.tscn" id="1_bdp2a"]
-[ext_resource type="Script" path="res://playerbase.cs" id="2_b3egb"]
+[ext_resource type="PackedScene" uid="uid://bym4jg4rr025e" path="res://scenes/playerbase.tscn" id="1_acalg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o00yb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -25,9 +24,8 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gvwty")
 
-[node name="Player" parent="." instance=ExtResource("1_bdp2a")]
+[node name="Player" parent="." instance=ExtResource("1_acalg")]
 transform = Transform3D(0.911773, -0.000157999, 9.08201e-05, 0.000157999, 0.911773, 5.70458e-05, -9.08201e-05, -5.70458e-05, 0.911773, -6.73868, 2.1494, 7.62877)
-script = ExtResource("2_b3egb")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 use_collision = true
