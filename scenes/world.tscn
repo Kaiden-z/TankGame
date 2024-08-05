@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bv64ds08ejq3i"]
+[gd_scene load_steps=6 format=3 uid="uid://bv64ds08ejq3i"]
 
 [ext_resource type="PackedScene" uid="uid://bym4jg4rr025e" path="res://scenes/playerbase.tscn" id="1_acalg"]
+[ext_resource type="Script" path="res://scenes/SceneManager.cs" id="1_mhirj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o00yb"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,6 +17,8 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_mhirj")
+playerScene = ExtResource("1_acalg")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
@@ -24,9 +27,20 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gvwty")
 
-[node name="Player" parent="." instance=ExtResource("1_acalg")]
-transform = Transform3D(0.911773, -0.000157999, 9.08201e-05, 0.000157999, 0.911773, 5.70458e-05, -9.08201e-05, -5.70458e-05, 0.911773, -6.73868, 2.1494, 7.62877)
-
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 use_collision = true
 size = Vector3(20, 1, 20)
+
+[node name="PlayerSpawnPoints" type="Node3D" parent="."]
+
+[node name="0" type="Node3D" parent="PlayerSpawnPoints" groups=["PlayerSpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0)
+
+[node name="1" type="Node3D" parent="PlayerSpawnPoints" groups=["PlayerSpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
+
+[node name="2" type="Node3D" parent="PlayerSpawnPoints" groups=["PlayerSpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
+
+[node name="3" type="Node3D" parent="PlayerSpawnPoints" groups=["PlayerSpawnPoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)

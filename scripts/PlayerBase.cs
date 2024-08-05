@@ -12,11 +12,20 @@ public partial class PlayerBase : CharacterBody3D
 
 	public Node3D head;
 	public Camera3D camera;
+	
+	private int authorityId;
 
 	public override void _Ready() {
 		head = GetNode<Node3D>("Head");
 		camera = GetNode<Camera3D>("Head/Camera3D");
-		Input.MouseMode = Input.MouseModeEnum.Captured;
+		//Input.MouseMode = Input.MouseModeEnum.Captured;
+
+		GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+		authorityId = GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority();
+		
+		if (Multiplayer.GetUniqueId() == authorityId) {
+			camera.Current = true;
+		}
 	}
 
 	public override void _Input(InputEvent ievent)
@@ -36,32 +45,35 @@ public partial class PlayerBase : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Vector3 velocity = Velocity;
-
-		// Add the gravity.
-		if (!IsOnFloor())
-			velocity.Y -= gravity * (float)delta;
-
-		// Handle Jump.
-		if (Input.IsActionJustPressed("jump") && IsOnFloor())
-			velocity.Y = JumpVelocity;
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
-		Vector3 direction = (head.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
+		if (Multiplayer.GetUniqueId() == GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority())
 		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
-		}
-		else
-		{
-			velocity.X = 0.0f;
-			velocity.Z = 0.0f;
-		}
+			Vector3 velocity = Velocity;
 
-		Velocity = velocity;
-		MoveAndSlide();
+			// Add the gravity.
+			if (!IsOnFloor())
+				velocity.Y -= gravity * (float)delta;
+
+			// Handle Jump.
+			if (Input.IsActionJustPressed("jump") && IsOnFloor())
+				velocity.Y = JumpVelocity;
+
+			// Get the input direction and handle the movement/deceleration.
+			// As good practice, you should replace UI actions with custom gameplay actions.
+			Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
+			Vector3 direction = (head.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+			if (direction != Vector3.Zero)
+			{
+				velocity.X = direction.X * Speed;
+				velocity.Z = direction.Z * Speed;
+			}
+			else
+			{
+				velocity.X = 0.0f;
+				velocity.Z = 0.0f;
+			}
+
+			Velocity = velocity;
+			MoveAndSlide();
+		}
 	}
 }

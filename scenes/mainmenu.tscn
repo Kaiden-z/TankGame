@@ -1,14 +1,16 @@
 [gd_scene load_steps=2 format=3 uid="uid://bphe507835gbc"]
 
-[ext_resource type="Script" path="res://scripts/Start.cs" id="1_ywt31"]
+[ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_rr0v2"]
 
-[node name="Control" type="Control"]
+[node name="MultiplayerController" type="Control" node_paths=PackedStringArray("NameField")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_rr0v2")
+NameField = NodePath("MarginContainer/HBoxContainer/VBoxContainer/NameField")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -28,12 +30,20 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Enter Name:
+"
+
+[node name="NameField" type="LineEdit" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="Start" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 text = "Start"
-script = ExtResource("1_ywt31")
 
 [node name="Host" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(50, 50)
@@ -53,4 +63,6 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Start" to="MarginContainer/HBoxContainer/VBoxContainer/Start" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
